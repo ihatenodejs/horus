@@ -1,9 +1,8 @@
 "use client"
 
-import { DashHeader } from "@/components/page-elements/Header"
-import { AppSidebar } from "@/components/page-elements/Sidebar"
+import { DashHeader } from "@/components/Header"
+import { AppSidebar } from "@/components/Sidebar"
 import { authClient } from "@/lib/auth-client"
-import { signInGithub } from "@/utils/account-client"
 import { useEffect, useState } from "react"
 import {
   Card,
@@ -12,12 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { SiGithub } from "react-icons/si"
-
+import { Loader } from "lucide-react"
+import { GithubSignin } from "@/components/auth/SignInButtons"
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isLoginLoading, setIsLoginLoading] = useState(false)
 
   useEffect(() => {
     authClient.getSession()
@@ -25,25 +25,39 @@ export default function Home() {
         if (data?.session?.userId) {
           setIsAuthenticated(true)
         }
+        setIsLoading(false)
       })
       .catch(error => {
         console.error('[!] Error while fetching session:', error)
       })
   }, [])
 
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen w-full">
+        <h1 className="text-4xl font-bold mb-8 italic">horus</h1>
+        <Loader className="animate-spin" />
+      </div>
+    )
+  }
+
   return (
     <>
       {isAuthenticated && <AppSidebar />}
-      <main className="flex min-h-screen w-full flex-col p-4">
+      <main className="flex min-h-screen w-full flex-col">
         {isAuthenticated ? (
           <DashHeader
             title="home"
             isAuthenticated={isAuthenticated}
+            isLoginLoading={isLoginLoading}
+            setIsLoginLoading={setIsLoginLoading}
           />
         ) : (
           <DashHeader
             title="authentication"
             isAuthenticated={isAuthenticated}
+            isLoginLoading={isLoginLoading}
+            setIsLoginLoading={setIsLoginLoading}
           />
         )}
         <div id="mainContent" className="flex flex-row w-full h-full">
@@ -64,10 +78,10 @@ export default function Home() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button size="lg" className="w-full cursor-pointer" onClick={signInGithub}>
-                      <SiGithub />
-                      Continue with GitHub
-                    </Button>
+                    <GithubSignin
+                      isLoginLoading={isLoginLoading}
+                      setIsLoginLoading={setIsLoginLoading}
+                    />
                   </CardContent>
                 </Card>
               </div>
