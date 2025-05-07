@@ -11,13 +11,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
 import { Loader } from "lucide-react"
 import { GithubSignin } from "@/components/auth/SignInButtons"
+import { Router } from "@/components/Router"
+
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isLoginLoading, setIsLoginLoading] = useState(false)
+  const [currentPage] = useState("home")
 
   useEffect(() => {
     authClient.getSession()
@@ -61,13 +63,9 @@ export default function Home() {
           />
         )}
         <div id="mainContent" className="flex flex-row w-full h-full">
-          <div id="content" className={cn(
-            "flex flex-col w-3/4 bg-white py-6 px-8",
-            isAuthenticated ? "w-3/4" : "w-full"
-          )}>
+          <div id="content" className="flex flex-col w-full bg-white py-6 px-8">
             {isAuthenticated ? (
-              <div className="flex flex-col">
-              </div>
+              <Router currentPage={currentPage} />
             ) : (
               <div className="flex flex-col items-center justify-center content-center w-full h-full">
                 <Card className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
