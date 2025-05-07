@@ -3,33 +3,37 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenuButton,
 } from "@/components/ui/sidebar"
+import { HomeIcon, CalendarIcon } from "lucide-react"
 
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader />
+      <SidebarHeader className="flex items-center justify-center">
+        <h1 className="text-2xl font-bold italic mt-4">horus</h1>
+      </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+        <SidebarGroup>
+          <SidebarGroupLabel>
+            Main
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenuButton className="cursor-pointer">
+              <HomeIcon />
+              <span>Home</span>
+            </SidebarMenuButton>
+            <SidebarMenuButton className="cursor-pointer">
+              <CalendarIcon />
+              <span>Life at a Glance</span>
+            </SidebarMenuButton>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
-  )
-}
-
-export function SubSidebar() {
-  return (
-    <div className="flex flex-col w-1/4 h-full bg-gray-200 p-4">
-      <h2 className="text-xl font-bold">sub sidebar</h2>
-      <ul className="list-disc pl-5">
-        <li>item</li>
-        <li>item</li>
-        <li>item</li>
-        <li>item</li>
-        <li>item</li>
-      </ul>
-    </div>
   )
 }
