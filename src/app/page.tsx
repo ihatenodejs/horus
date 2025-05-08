@@ -19,7 +19,7 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isLoginLoading, setIsLoginLoading] = useState(false)
-  const [currentPage] = useState("home")
+  const [currentPage, setCurrentPage] = useState("home")
 
   useEffect(() => {
     authClient.getSession()
@@ -45,18 +45,18 @@ export default function Home() {
 
   return (
     <>
-      {isAuthenticated && <AppSidebar />}
+      {isAuthenticated && <AppSidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />}
       <main className="flex min-h-screen w-full flex-col">
         {isAuthenticated ? (
           <DashHeader
-            title="home"
+            currentPage={currentPage}
             isAuthenticated={isAuthenticated}
             isLoginLoading={isLoginLoading}
             setIsLoginLoading={setIsLoginLoading}
           />
         ) : (
           <DashHeader
-            title="authentication"
+            currentPage={currentPage}
             isAuthenticated={isAuthenticated}
             isLoginLoading={isLoginLoading}
             setIsLoginLoading={setIsLoginLoading}

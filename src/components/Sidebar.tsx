@@ -8,9 +8,10 @@ import {
   SidebarHeader,
   SidebarMenuButton,
 } from "@/components/ui/sidebar"
-import { HomeIcon, CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Pages } from "@/components/resources/Pages"
 
-export function AppSidebar() {
+export function AppSidebar({ currentPage, setCurrentPage }: { currentPage: string, setCurrentPage: (page: string) => void }) {
   return (
     <Sidebar>
       <SidebarHeader className="flex items-center justify-center">
@@ -22,14 +23,12 @@ export function AppSidebar() {
             Main
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenuButton className="cursor-pointer">
-              <HomeIcon />
-              <span>Home</span>
-            </SidebarMenuButton>
-            <SidebarMenuButton className="cursor-pointer">
-              <CalendarIcon />
-              <span>Life at a Glance</span>
-            </SidebarMenuButton>
+            {Object.values(Pages).map((page) => (
+              <SidebarMenuButton key={page.name} className={cn("cursor-pointer", currentPage === page.name && "bg-gray-100")} onClick={() => setCurrentPage(page.name)}>
+                {page.icon}
+                <span>{page.title}</span>
+              </SidebarMenuButton>
+            ))}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
